@@ -40,7 +40,11 @@ export default function Home() {
 
     return (
         <>
-            <div className="w-11/12 max-w-7xl mx-auto flex">
+            <div
+                className={`w-11/12 max-w-7xl mx-auto flex ${
+                    modal ? "max-h-[80vh] overflow-hidden" : "overflow-auto"
+                }`}
+            >
                 <div className="hidden min-w-36 sm:flex flex-col gap-y-3 py-3">
                     {menu.map((option, index) => (
                         <button
@@ -57,13 +61,7 @@ export default function Home() {
                         </button>
                     ))}
                 </div>
-                <div
-                    className={`w-full py-3 pr-0 pl-0 sm:pl-3 md:pl-5 mb-8 ${
-                        modal
-                            ? "max-h-screen overflow-y-hidden"
-                            : "overflow-y-auto"
-                    }`}
-                >
+                <div className={`w-full py-3 pr-0 pl-0 sm:pl-3 md:pl-5 mb-8`}>
                     {menu[optionSelected].component}
                 </div>
             </div>

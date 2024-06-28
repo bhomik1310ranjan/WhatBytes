@@ -21,6 +21,10 @@ export function Modal({
     const percentileRef = useRef<HTMLInputElement>(null);
     const scoreRef = useRef<HTMLInputElement>(null);
 
+    const rankError = useRef<HTMLParagraphElement>(null);
+    const percentileError = useRef<HTMLParagraphElement>(null);
+    const scoreError = useRef<HTMLParagraphElement>(null);
+
     const modalCloseHandler = () => {
         if (rankRef.current) {
             rankRef.current.value = "";
@@ -35,12 +39,17 @@ export function Modal({
     };
 
     const saveHandle = () => {
-        setUserData({
-            rank: rankRef.current?.value || "",
-            percentile: percentileRef.current?.value || "",
-            score: scoreRef.current?.value || "",
-        });
-        modalCloseHandler();
+        const rank = rankRef.current?.value || "";
+        const percentile = percentileRef.current?.value || "";
+        const score = scoreRef.current?.value || "";
+        if (rank.length > 0 && percentile.length > 0 && score.length > 0) {
+            setUserData({
+                rank: rankRef.current?.value || "",
+                percentile: percentileRef.current?.value || "",
+                score: scoreRef.current?.value || "",
+            });
+            modalCloseHandler();
+        }
     };
 
     return (
@@ -65,7 +74,7 @@ export function Modal({
                     <img src="/html.png" className="w-8" />
                 </div>
                 <form className="flex flex-col gap-y-3">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                         <label
                             htmlFor="rank"
                             className="flex items-center gap-x-4"
@@ -78,15 +87,38 @@ export function Modal({
                                 <span className="font-bold">Rank</span>
                             </p>
                         </label>
-                        <input
-                            type="text"
-                            id="rank"
-                            ref={rankRef}
-                            className="border border-blue-900 rounded focus:outline-none px-2 py-0.5"
-                        />
+                        <div className="flex flex-col items-end">
+                            <input
+                                type="number"
+                                id="rank"
+                                ref={rankRef}
+                                onChange={(event) => {
+                                    const number = parseInt(event.target.value);
+                                    let opacity = "";
+                                    if (
+                                        typeof number === "number" &&
+                                        number >= 0
+                                    ) {
+                                        opacity = "0";
+                                    } else {
+                                        opacity = "1";
+                                    }
+                                    if (rankError.current) {
+                                        rankError.current.style.opacity =
+                                            opacity;
+                                    }
+                                }}
+                                className="w-full border border-blue-900 rounded focus:outline-none px-2 py-0.5"
+                            />
+                            <p
+                                ref={rankError}
+                                className="text-red-500 text-xs transition-opacity duration-300"
+                            >
+                                Must be a number ({">"}=0)
+                            </p>
+                        </div>
                     </div>
-
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                         <label
                             htmlFor="percentile"
                             className="flex items-center gap-x-4"
@@ -99,15 +131,35 @@ export function Modal({
                                 <span className="font-bold">Percentile</span>
                             </p>
                         </label>
-                        <input
-                            type="text"
-                            id="percentile"
-                            ref={percentileRef}
-                            className="border border-blue-900 rounded focus:outline-none px-2 py-0.5"
-                        />
+                        <div className="flex flex-col items-end">
+                            <input
+                                type="number"
+                                id="percentile"
+                                ref={percentileRef}
+                                onChange={(event) => {
+                                    const number = parseInt(event.target.value);
+                                    let opacity = "";
+                                    if (number >= 0 && number <= 100) {
+                                        opacity = "0";
+                                    } else {
+                                        opacity = "1";
+                                    }
+                                    if (percentileError.current) {
+                                        percentileError.current.style.opacity =
+                                            opacity;
+                                    }
+                                }}
+                                className="w-full border border-blue-900 rounded focus:outline-none px-2 py-0.5"
+                            />
+                            <p
+                                ref={percentileError}
+                                className="text-red-500 text-xs transition-opacity duration-300"
+                            >
+                                Must be between 0 and 100
+                            </p>
+                        </div>
                     </div>
-
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                         <label
                             htmlFor="score"
                             className="flex items-center gap-x-4"
@@ -120,12 +172,33 @@ export function Modal({
                                 <span className="font-bold">Current Score</span>
                             </p>
                         </label>
-                        <input
-                            type="text"
-                            id="score"
-                            ref={scoreRef}
-                            className="border border-blue-900 rounded focus:outline-none px-2 py-0.5"
-                        />
+                        <div className="flex flex-col items-end">
+                            <input
+                                type="number"
+                                id="score"
+                                ref={scoreRef}
+                                onChange={(event) => {
+                                    const number = parseInt(event.target.value);
+                                    let opacity = "";
+                                    if (number >= 0 && number <= 15) {
+                                        opacity = "0";
+                                    } else {
+                                        opacity = "1";
+                                    }
+                                    if (scoreError.current) {
+                                        scoreError.current.style.opacity =
+                                            opacity;
+                                    }
+                                }}
+                                className="w-full border border-blue-900 rounded focus:outline-none px-2 py-0.5"
+                            />
+                            <p
+                                ref={scoreError}
+                                className="text-red-500 text-xs transition-opacity duration-300"
+                            >
+                                Must be between 0 and 15
+                            </p>
+                        </div>
                     </div>
 
                     <div className="flex items-center justify-end gap-x-2">
