@@ -140,8 +140,12 @@ export function SkillTest({
                             <span className="font-semibold">
                                 You scored {userData.percentile}% percentile
                             </span>{" "}
-                            which is lower than the average percentile 72% of
-                            all the engineers who took this assessment.
+                            which is{" "}
+                            {parseFloat(userData.percentile) <= 72
+                                ? "lower"
+                                : "higher"}{" "}
+                            than the average percentile 72% of all the engineers
+                            who took this assessment.
                         </p>
                         <PercentileLineChart />
                     </div>

@@ -42,11 +42,20 @@ export function Modal({
         const rank = rankRef.current?.value || "";
         const percentile = percentileRef.current?.value || "";
         const score = scoreRef.current?.value || "";
-        if (rank.length > 0 && percentile.length > 0 && score.length > 0) {
+        if (
+            rank.length > 0 &&
+            percentile.length > 0 &&
+            score.length > 0 &&
+            parseFloat(rank) >= 0 &&
+            parseFloat(percentile) >= 0 &&
+            parseFloat(percentile) <= 100 &&
+            parseFloat(score) >= 0 &&
+            parseFloat(score) <= 15
+        ) {
             setUserData({
-                rank: rankRef.current?.value || "",
-                percentile: percentileRef.current?.value || "",
-                score: scoreRef.current?.value || "",
+                rank,
+                percentile,
+                score,
             });
             modalCloseHandler();
         }
@@ -93,7 +102,9 @@ export function Modal({
                                 id="rank"
                                 ref={rankRef}
                                 onChange={(event) => {
-                                    const number = parseInt(event.target.value);
+                                    const number = parseFloat(
+                                        event.target.value
+                                    );
                                     let opacity = "";
                                     if (
                                         typeof number === "number" &&
@@ -137,7 +148,9 @@ export function Modal({
                                 id="percentile"
                                 ref={percentileRef}
                                 onChange={(event) => {
-                                    const number = parseInt(event.target.value);
+                                    const number = parseFloat(
+                                        event.target.value
+                                    );
                                     let opacity = "";
                                     if (number >= 0 && number <= 100) {
                                         opacity = "0";
@@ -178,7 +191,9 @@ export function Modal({
                                 id="score"
                                 ref={scoreRef}
                                 onChange={(event) => {
-                                    const number = parseInt(event.target.value);
+                                    const number = parseFloat(
+                                        event.target.value
+                                    );
                                     let opacity = "";
                                     if (number >= 0 && number <= 15) {
                                         opacity = "0";
