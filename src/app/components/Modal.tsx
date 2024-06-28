@@ -17,22 +17,28 @@ export function Modal({
         }>
     >;
 }) {
-    const rankRef = useRef(null);
-    const percentileRef = useRef(null);
-    const scoreRef = useRef(null);
+    const rankRef = useRef<HTMLInputElement>(null);
+    const percentileRef = useRef<HTMLInputElement>(null);
+    const scoreRef = useRef<HTMLInputElement>(null);
 
     const modalCloseHandler = () => {
-        rankRef.current.value = "";
-        percentileRef.current.value = "";
-        scoreRef.current.value = "";
+        if (rankRef.current) {
+            rankRef.current.value = "";
+        }
+        if (percentileRef.current) {
+            percentileRef.current.value = "";
+        }
+        if (scoreRef.current) {
+            scoreRef.current.value = "";
+        }
         closeModal();
     };
 
     const saveHandle = () => {
         setUserData({
-            rank: rankRef.current.value,
-            percentile: percentileRef.current.value,
-            score: scoreRef.current.value,
+            rank: rankRef.current?.value || "",
+            percentile: percentileRef.current?.value || "",
+            score: scoreRef.current?.value || "",
         });
         modalCloseHandler();
     };

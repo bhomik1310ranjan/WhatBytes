@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { MdBarChart } from "react-icons/md";
 import { CiMedal } from "react-icons/ci";
 import { CiFileOn } from "react-icons/ci";
